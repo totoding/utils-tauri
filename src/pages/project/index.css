@@ -1,0 +1,57 @@
+.card-custom-hover-style {
+  transition-property: all;
+}
+
+.card-custom-hover-style:hover {
+  transform: translateY(-4px);
+}
+
+
+
+/* 另一种方案：使用 overlay scrollbar */
+.overlay-scrollbar {
+  overflow: overlay; /* 这个属性让滚动条浮动 */
+  scrollbar-width: thin;
+  scrollbar-color: #e4e4e7 transparent;
+}
+
+.overlay-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-thumb {
+  background:#e4e4e7;
+  border-radius: 4px;
+  transition: opacity 0.3s ease;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #e4e4e7;
+}
+
+/* 确保容器有正确的定位 */
+.scroll-container {
+  position: relative;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-button:start:decrement,
+.overlay-scrollbar::-webkit-scrollbar-button:end:increment {
+  display: none;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-corner {
+  display: none;
+}
+.overlay-scrollbar::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
