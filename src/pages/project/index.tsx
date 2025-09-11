@@ -6,7 +6,7 @@ import ProjectForm from './ProjectForm';
 import { ProjectProvider } from './ProjectContext';
 import { arrayMove } from "@dnd-kit/sortable";
 import "./index.css";
-
+import { motion, AnimatePresence } from 'motion/react';
 const mockProjectList = [
   { id: 1, name: 'Project Alpha', desc: '1' },
   { id: 2, name: 'Project Beta', desc: '2' },
@@ -29,7 +29,7 @@ export default function ProjectPage() {
     if (!searchKeyword.trim()) {
       return allProjects;
     }
-    return allProjects.filter(project => 
+    return allProjects.filter(project =>
       project.name.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   }, [allProjects, searchKeyword]);
@@ -51,8 +51,8 @@ export default function ProjectPage() {
   const projectFormSubmit = async (data: Omit<ProjectRow, 'id'>) => {
     if (editingProject) {
       // 编辑模式
-      setAllProjects(prev => prev.map(project => 
-        project.id === editingProject.id 
+      setAllProjects(prev => prev.map(project =>
+        project.id === editingProject.id
           ? { ...project, ...data }
           : project
       ));
@@ -66,7 +66,7 @@ export default function ProjectPage() {
       setAllProjects(prev => [...prev, newProject]);
       Message.success('项目创建成功');
     }
-    
+
     setProjectFormVisible(false);
     setEditingProject(null);
   };
@@ -113,23 +113,36 @@ export default function ProjectPage() {
 
   return (
     <ProjectProvider value={projectContextValue}>
-      <div className="box-border w-full flex">
-        <div className="w-[300px] h-[calc(100vh-50px)] p-2 box-border">
-          <div className="flex w-full max-w-sm items-center gap-2 mb-2">
-            <Input.Search allowClear onChange={filterProjects}/>
-            <Button type='primary' style={{ width: '40px' }} icon={<IconPlus />} onClick={showProjectForm} />
-          </div>
-          <div className='overlay-scrollbar h-[calc(100vh-110px)] overflow-y-auto pr-1'>
-            <Projects projectList={displayProjects} onDragEnd={onDragEnd} />
-          </div>
-        </div>
-        <ProjectForm 
-          visible={projectFormVisible} 
-          onClose={handleProjectFormClose} 
-          onSubmit={projectFormSubmit}
-          initialValues={editingProject || undefined} // 传递编辑的初始值
-        />
-      </div>
+      <AnimatePresence>
+        <motion.div
+          className="box-border w-full flex"
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1,}}
+     
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <motion.div
+            className="w-[300px] h-[calc(100vh-50px)] p-2 box-border"
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          >
+            <div className="flex w-full max-w-sm items-center gap-2 mb-2">
+              <Input.Search allowClear onChange={filterProjects} />
+              <Button type='primary' style={{ width: '40px' }} icon={<IconPlus />} onClick={showProjectForm} />
+            </div>
+            <div className='overlay-scrollbar h-[calc(100vh-110px)] overflow-y-auto pr-1'>
+              <Projects projectList={displayProjects} onDragEnd={onDragEnd} />
+            </div>
+          </motion.div>
+          <ProjectForm
+            visible={projectFormVisible}
+            onClose={handleProjectFormClose}
+            onSubmit={projectFormSubmit}
+            initialValues={editingProject || undefined}
+          />
+        </motion.div>
+      </AnimatePresence>
     </ProjectProvider>
   );
 }

@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from "react-router";
 import { IconApps, IconSafe, IconFire, IconClose, IconMinus } from "@arco-design/web-react/icon";
 import { useState, useEffect } from "react";
 import { api } from "../commands";
+
 const menus = [
   {
     key: '0',
@@ -48,7 +49,9 @@ export default function MainLayout() {
   const handleMinSizeClick = () => {
     api.minSizeWindow();
   }
+
   return (
+ 
     <div className="w-full h-full">
       <div className="flex w-full h-[50px] bg-[#fff] border-b-[1px] border-[#e4e4e7] box-border select-none">
         <div className="h-[49px] w-[200px]  flex items-center pl-4 font-bold text-lg">
@@ -79,10 +82,11 @@ export default function MainLayout() {
             ))
           }
         </Menu>
-        <div className="flex-1 bg-[#fff] h-[calc(100vh-50px)] overflow-auto box-border ">
+        <div className="flex-1 bg-[#fff] h-[calc(100vh-50px)] overflow-auto box-border">
           <Outlet />
         </div>
       </div>
     </div>
+
   );
 }

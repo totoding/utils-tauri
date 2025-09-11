@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import { Modal, Form, Input } from '@arco-design/web-react';
+
 import type { ProjectRow } from './index';
 
 interface ProjectFormProps {
   visible: boolean;
   onClose: () => void;
   onSubmit: (data: Omit<ProjectRow, 'id'>) => void;
-  initialValues?: ProjectRow; // 新增：用于编辑时的初始值
+  initialValues?: ProjectRow;
 }
 
 export default function ProjectForm({ visible, onClose, onSubmit, initialValues }: ProjectFormProps) {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<ProjectRow>();
 
   // 当表单显示且有初始值时，设置表单值
   useEffect(() => {
@@ -19,13 +20,16 @@ export default function ProjectForm({ visible, onClose, onSubmit, initialValues 
     } else if (visible) {
       form.resetFields();
     }
-  }, [visible, initialValues, form]);
+  }, [visible, initialValues]);
 
-  const handleSubmit = () => {
-    form.validate().then((values) => {
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validate();
       onSubmit(values);
       form.resetFields();
-    }).catch(console.error);
+    } catch (error) {
+      console.error('表单验证失败:', error);
+    }
   };
 
   const handleCancel = () => {
